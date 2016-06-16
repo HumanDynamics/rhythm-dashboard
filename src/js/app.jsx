@@ -9,6 +9,7 @@ import MeetingSummary from './components/meeting/meetingSummary'
 import MeetingListAPIUtils from './api/MeetingAPIUtils'
 import ParticipantAPIUtils from './api/ParticipantAPIUtils'
 import TurnAPIUtils from './api/TurnAPIUtils'
+import LoginStore from './stores/loginStore'
 
 const App = React.createClass({
   render () {
@@ -20,6 +21,17 @@ const App = React.createClass({
     )
   }
 })
+
+// requires authentication, then moves them back to where they were
+// trying to go.
+function requireAuth (nextState, replace) {
+  if (!LoginStore.isLoggedIn()) {
+    replace({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
 
 const app = {
   initialize: function () {
@@ -36,8 +48,9 @@ const app = {
       <Router history={browserHistory}>
         <Route path='/' component={App}>
           <Route path='login' component={Login}/>
-          <Route path='meetings' component={MeetingTable}/>
-          <Route path='meeting/:meetingId' component={MeetingSummary}/>
+          <Route path='logout' component={Logout}/>
+          <Route path='meetings' component={MeetingTable} onEnter={requireAuth}/>
+          <Route path='meeting/:meetingId' component={MeetingSummary} onEnter={requireAuth}/>
         </Route>
       </Router>,
       mountNode

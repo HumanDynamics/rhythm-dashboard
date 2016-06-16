@@ -40,3 +40,5 @@ AppDispatcher.register(function (payload) {
       break
   }
 })
+
+export default LoginStore
