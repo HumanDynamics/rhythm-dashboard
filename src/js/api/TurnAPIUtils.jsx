@@ -2,7 +2,7 @@ import MeetingActionCreators from '../actions/MeetingActionCreators'
 import io from 'socket.io-client'
 import feathers from 'feathers-client'
 
-var socket = io.connect('localhost:3000', {'transports': [
+var socket = io.connect(process.env.RHYTHM_SERVER_URL, {'transports': [
   'websocket',
   'flashsocket',
   'jsonp-polling',

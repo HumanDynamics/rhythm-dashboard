@@ -29,6 +29,7 @@ export default class NavMenu extends React.Component {
         onRequestChange={(open) => this.setState({open})}
       >
         <MenuItem onTouchTap={this.handleClose}><Link to='meetings'>All Meetings</Link></MenuItem>
+        <MenuItem onTouchTap={this.handleClose}><Link to='login'>Log In</Link></MenuItem>
       </LeftNav>
     )
   }

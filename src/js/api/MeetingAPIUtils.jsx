@@ -7,7 +7,7 @@ import _ from 'underscore'
 
 var ActionTypes = MeetingConstants.ActionTypes
 
-var socket = io.connect('localhost:3000', {'transports': [
+var socket = io.connect(process.env.RHYTHM_SERVER_URL, {'transports': [
   'websocket',
   'flashsocket',
   'jsonp-polling',
