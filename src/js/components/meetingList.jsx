@@ -8,6 +8,7 @@ import { Link } from 'react-router'
 import {MeetingStore} from '../stores/meetingStore'
 import {ParticipantStore} from '../stores/participantStore'
 import MeetingActions from '../actions/MeetingActionCreators'
+import MeetingListAPIUtils from '../api/MeetingAPIUtils'
 
 import Table from 'material-ui/lib/table/table'
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column'
@@ -94,6 +95,9 @@ export default class MeetingTable extends React.Component {
   }
 
   componentDidMount () {
+    MeetingListAPIUtils.getAllMeetings()
+    MeetingListAPIUtils.registerCreatedCallback()
+    MeetingListAPIUtils.registerChangedCallback()
     MeetingStore.bind('change', this.meetingsChanged)
     ParticipantStore.bind('change', this.participantsChanged)
   }

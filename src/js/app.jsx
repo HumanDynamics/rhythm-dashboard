@@ -6,9 +6,6 @@ import {Nav} from './components/components'
 import Login from './components/login'
 import MeetingTable from './components/meetingList'
 import MeetingSummary from './components/meeting/meetingSummary'
-import MeetingListAPIUtils from './api/MeetingAPIUtils'
-import ParticipantAPIUtils from './api/ParticipantAPIUtils'
-import TurnAPIUtils from './api/TurnAPIUtils'
 import LoginStore from './stores/loginStore'
 
 const App = React.createClass({
@@ -48,23 +45,12 @@ const app = {
       <Router history={browserHistory}>
         <Route path='/' component={App}>
           <Route path='login' component={Login}/>
-          <Route path='logout' component={Logout}/>
           <Route path='meetings' component={MeetingTable} onEnter={requireAuth}/>
           <Route path='meeting/:meetingId' component={MeetingSummary} onEnter={requireAuth}/>
         </Route>
       </Router>,
       mountNode
     )
-
-    MeetingListAPIUtils.getAllMeetings()
-    MeetingListAPIUtils.registerCreatedCallback()
-    MeetingListAPIUtils.registerChangedCallback()
-
-    ParticipantAPIUtils.getAllParticipants()
-    ParticipantAPIUtils.registerCreatedCallback()
-    ParticipantAPIUtils.registerChangedCallback()
-
-    TurnAPIUtils.registerCreatedCallback()
   }
 }
 

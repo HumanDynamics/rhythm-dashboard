@@ -5,12 +5,9 @@ var ActionTypes = LoginConstants.ActionTypes
 
 module.exports = {
 
-  loginUser: function (email, jwt) {
-    localStorage.setItem('jwt', jwt)
-    browserHistory.push('/meetings')
+  loginUser: function (jwt) {
     AppDispatcher.dispatch({
       type: ActionTypes.USER_LOGGED_IN,
-      email: email,
       jwt: jwt
     })
   }

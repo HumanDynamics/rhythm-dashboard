@@ -18,7 +18,7 @@ class AuthService {
       json: true
     }).then(function (body) {
       let jwt = body.token
-      LoginActions.loginUser(email, jwt)
+      LoginActions.loginUser(jwt)
     })
   }
 }

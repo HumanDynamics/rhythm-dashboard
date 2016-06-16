@@ -2,21 +2,25 @@ import MicroEvent from 'microevent'
 import AppDispatcher from '../dispatcher/dispatcher'
 import LoginConstants from '../constants/LoginConstants'
 
+import feathers from 'feathers-client'
+import io from 'socket.io-client'
+
 var ActionTypes = LoginConstants.ActionTypes
 var CHANGE_EVENT = 'change'
 
 class _LoginStore {
   constructor () {
-    this._email = null
     this._token = null
+    this._socket = null
+    this._app = null
   }
 
   get token () {
     return this._token
   }
 
-  get email () {
-    return this._email
+  get app () {
+    return this._app
   }
 
   isLoggedIn () {
@@ -27,15 +31,37 @@ class _LoginStore {
 MicroEvent.mixin(_LoginStore)
 var LoginStore = new _LoginStore()
 
-function _loginUser (email, jwt) {
-  LoginStore._email = email
-  LoginStore._jwt = jwt
+function _initializeApp (jwt) {
+  LoginStore._socket = io(process.env.RHYTHM_SERVER_URL, {
+    'transports': [
+      'websocket',
+      'flashsocket',
+      'htmlfile',
+      'xhr-polling',
+      'jsonp-polling'
+    ]
+  })
+
+  LoginStore._app = feathers()
+    .configure(feathers.socketio(LoginStore._socket))
+    .configure(feathers.hooks())
+    .configure(feathers.authentication())
+  LoginStore._app.authenticate({
+    type: 'token',
+    token: jwt
+  })
+}
+
+function _loginUser (jwt) {
+  LoginStore._token = jwt
+  _initializeApp(jwt)
 }
 
 AppDispatcher.register(function (payload) {
   switch (payload.type) {
     case ActionTypes.USER_LOGGED_IN:
-      _loginUser(payload.email, payload.jwt)
+      localStorage.setItem('jwt', payload.jwt)
+      _loginUser(payload.jwt)
       LoginStore.trigger(CHANGE_EVENT)
       break
   }

@@ -1,26 +1,13 @@
 import MeetingActionCreators from '../actions/MeetingActionCreators'
 import AppDispatcher from '../dispatcher/dispatcher'
 import MeetingConstants from '../constants/MeetingConstants'
-import io from 'socket.io-client'
-import feathers from 'feathers-client'
+import LoginStore from '../stores/loginStore'
 import _ from 'underscore'
 
 var ActionTypes = MeetingConstants.ActionTypes
 
-var socket = io.connect(process.env.RHYTHM_SERVER_URL, {'transports': [
-  'websocket',
-  'flashsocket',
-  'jsonp-polling',
-  'xhr-polling',
-  'htmlfile'
-]})
-
-var app = feathers().configure(feathers.socketio(socket))
-
-var meetings = app.service('meetings')
-var turns = app.service('turns')
-
 function updateMeetingActive (meeting, active) {
+  var meetings = LoginStore.app.service('meetings')
   meetings.patch(meeting, {'active': active}, {},
                  function (error, data) {
                    if (!error && data) {
@@ -31,6 +18,8 @@ function updateMeetingActive (meeting, active) {
 
 // get all meetings from server
 function getAllMeetings () {
+  var meetings = LoginStore.app.service('meetings')
+  var turns = LoginStore.app.service('turns')
   meetings.find({}).then((foundMeetings) => {
     console.log('[utils] received meetings:', foundMeetings, MeetingActionCreators)
     MeetingActionCreators.receiveAllMeetings(foundMeetings)
@@ -56,6 +45,7 @@ function getAllMeetings () {
 }
 
 function registerCreatedCallback () {
+  var meetings = LoginStore.app.service('meetings')
   meetings.on('created', function (meeting) {
     console.log('[utils] new meeting created:', meeting)
     MeetingActionCreators.receiveNewMeeting(meeting)
@@ -63,6 +53,7 @@ function registerCreatedCallback () {
 }
 
 function registerChangedCallback () {
+  var meetings = LoginStore.app.service('meetings')
   meetings.on('patched', function (meeting) {
     MeetingActionCreators.receiveChangedMeeting(meeting)
   })
