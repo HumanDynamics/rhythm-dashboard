@@ -1,7 +1,7 @@
 import React from 'react'
 
 import TextField from 'material-ui/lib/TextField'
-import FlatButton from 'material-ui/lib/flat-button'
+import RaisedButton from 'material-ui/lib/raised-button'
 import Auth from '../services/AuthService'
 
 export default class Login extends React.Component {
@@ -51,7 +51,7 @@ export default class Login extends React.Component {
           id='password'
           ref='password'/>
         <br/>
-        <FlatButton
+        <RaisedButton
           label='Login'
           onClick={this.login}/>
       </div>

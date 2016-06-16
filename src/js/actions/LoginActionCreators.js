@@ -1,6 +1,5 @@
 import AppDispatcher from '../dispatcher/dispatcher'
 import LoginConstants from '../constants/LoginConstants'
-import { browserHistory } from 'react-router'
 var ActionTypes = LoginConstants.ActionTypes
 
 module.exports = {
@@ -11,5 +10,4 @@ module.exports = {
       jwt: jwt
     })
   }
-
 }

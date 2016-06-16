@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import injectTapEventPlugin from 'react-tap-event-plugin'
-import { Router, Route, browserHistory } from 'react-router'
+import { Router, Route, browserHistory, hashHistory } from 'react-router'
 import {Nav} from './components/components'
 import Login from './components/login'
 import MeetingTable from './components/meetingList'
@@ -13,7 +13,9 @@ const App = React.createClass({
     return (
       <div>
         <Nav/>
-        {this.props.children || <div>No component</div>}
+        <div id="content">
+          {this.props.children || <div>No component</div>}
+        </div>
       </div>
     )
   }
@@ -42,7 +44,7 @@ const app = {
     console.log('Device ready, will try to render main !')
     const mountNode = document.getElementById('reactAppContainer')
     ReactDOM.render(
-      <Router history={browserHistory}>
+      <Router history={hashHistory}>
         <Route path='/' component={App}>
           <Route path='login' component={Login}/>
           <Route path='meetings' component={MeetingTable} onEnter={requireAuth}/>
