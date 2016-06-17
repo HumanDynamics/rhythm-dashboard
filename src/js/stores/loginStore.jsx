@@ -1,10 +1,11 @@
-import MicroEvent from 'microevent'
-import AppDispatcher from '../dispatcher/dispatcher'
-import LoginConstants from '../constants/LoginConstants'
 import { hashHistory } from 'react-router'
-
+import MicroEvent from 'microevent'
+import jwtDecode from 'jwt-decode'
 import feathers from 'feathers-client'
 import io from 'socket.io-client'
+
+import AppDispatcher from '../dispatcher/dispatcher'
+import LoginConstants from '../constants/LoginConstants'
 
 var ActionTypes = LoginConstants.ActionTypes
 var CHANGE_EVENT = 'change'
@@ -14,18 +15,28 @@ class _LoginStore {
     this._token = null
     this._socket = null
     this._app = null
+    this._user = null
   }
 
   get token () {
-    return this._token || localStorage.jwt
+    console.log('getting token:', localStorage.jwt, this._token)
+    if (this._token == null) {
+      return localStorage.jwt
+    } else {
+      return this._token
+    }
   }
 
   get app () {
     return this._app
   }
 
+  get user () {
+    return this._user
+  }
+
   isLoggedIn () {
-    return !!this._token
+    return this.token != null
   }
 }
 
@@ -55,15 +66,21 @@ function _initializeApp (jwt) {
 
 function _loginUser (jwt) {
   LoginStore._token = jwt
+//  LoginStore._user = jwtDecode(jwt)
   _initializeApp(jwt)
 }
 
 AppDispatcher.register(function (payload) {
   switch (payload.type) {
     case ActionTypes.USER_LOGGED_IN:
-      localStorage.setItem('jwt', payload.jwt)
       _loginUser(payload.jwt)
       hashHistory.push('/')
+      LoginStore.trigger(CHANGE_EVENT)
+      break
+    case ActionTypes.LOGOUT_USER:
+      LoginStore._token = null
+      LoginStore._app = null
+//      LoginStore._user = null
       LoginStore.trigger(CHANGE_EVENT)
       break
   }

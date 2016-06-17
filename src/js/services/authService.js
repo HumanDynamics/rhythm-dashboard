@@ -21,6 +21,10 @@ class AuthService {
       LoginActions.loginUser(jwt)
     })
   }
+
+  logout () {
+    LoginActions.logoutUser()
+  }
 }
 
 export default new AuthService()

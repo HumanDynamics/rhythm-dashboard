@@ -1,5 +1,6 @@
 import keyMirror from 'keymirror'
 
 exports.ActionTypes = keyMirror({
-  LOGIN: null
+  USER_LOGGED_IN: null,
+  LOGOUT_USER: null
 })
