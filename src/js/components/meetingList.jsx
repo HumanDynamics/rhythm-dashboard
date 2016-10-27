@@ -9,6 +9,7 @@ import {MeetingStore} from '../stores/meetingStore'
 import {ParticipantStore} from '../stores/participantStore'
 import MeetingActions from '../actions/MeetingActionCreators'
 import MeetingListAPIUtils from '../api/MeetingAPIUtils'
+import ParticipantAPIUtils from '../api/ParticipantAPIUtils'
 
 import Table from 'material-ui/lib/table/table'
 import TableHeaderColumn from 'material-ui/lib/table/table-header-column'
@@ -51,6 +52,7 @@ class MeetingRow extends React.Component {
       <TableRow>
         <TableRowColumn><Link to={`/meeting/${this.props.meeting._id}`}>{this.props.meeting._id}</Link></TableRowColumn>
         <TableRowColumn>{this.getIcon(this.props.meeting.active)}</TableRowColumn>
+        <TableRowColumn>{this.props.participants.length}</TableRowColumn>
         <TableRowColumn>
           <RaisedButton
             label='Set Inactive'
@@ -98,6 +100,9 @@ export default class MeetingTable extends React.Component {
     MeetingListAPIUtils.getAllMeetings()
     MeetingListAPIUtils.registerCreatedCallback()
     MeetingListAPIUtils.registerChangedCallback()
+    ParticipantAPIUtils.getAllParticipants()
+    ParticipantAPIUtils.registerCreatedCallback()
+    ParticipantAPIUtils.registerChangedCallback()
     MeetingStore.bind('change', this.meetingsChanged)
     ParticipantStore.bind('change', this.participantsChanged)
   }
@@ -114,6 +119,7 @@ export default class MeetingTable extends React.Component {
           <TableRow>
             <TableHeaderColumn>Meeting ID</TableHeaderColumn>
             <TableHeaderColumn>Active?</TableHeaderColumn>
+            <TableHeaderColumn># Participants</TableHeaderColumn>
           </TableRow>
         </TableHeader>
         <TableBody>

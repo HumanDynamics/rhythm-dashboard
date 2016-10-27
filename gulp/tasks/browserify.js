@@ -13,7 +13,7 @@ gulp.task('browserify', function () {
     debug: true
   })
     .transform('babelify', {presets: ['es2015', 'react']})
-    .transform(envify({RHYTHM_SERVER_URL: 'https://rhythm-server-development.herokuapp.com'}))
+    .transform(envify({RHYTHM_SERVER_URL: 'https://rhythm-server-staging.media.mit.edu'}))
     .transform('reactify')
     .bundle()
     .on('error', handleErrors)
