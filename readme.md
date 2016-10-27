@@ -17,7 +17,7 @@ example env variables:
 
 ```
 RHYTHM_SERVER_URL=https://rhythm-server-development.herokuapp.com
-````
+```
 
 ## TODO:
 - user creation
