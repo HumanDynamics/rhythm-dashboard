@@ -1,12 +1,26 @@
-# Breakout Research Dashboard
+# rhythm-dashboard
+Dashboard and real-time analytics for rhythm
 
-A researc dashboard for the breakout tool. Allows researchers to view status data related to specific hangouts / teams / participants.
+## install
 
-Built with React + Flux.
+```javascript
+npm install
+```
 
-## Installation
+## run
+```javascript
+gulp
+```
 
-1. `npm install`
-2. `gulp`
-3. Change references to `breakout-dev.media.mit.edu` to `your-url.here.com`.
-3. Point something to `www`.
+## env variables
+example env variables:
+
+```
+RHYTHM_SERVER_URL=https://rhythm-server-development.herokuapp.com
+````
+
+## TODO:
+- user creation
+- authenticating correctly
+- visualizatoin of individual meetings
+- aggregate statistics for researchers
